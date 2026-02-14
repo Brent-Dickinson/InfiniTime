@@ -41,6 +41,11 @@ sudo docker run --rm -v $(pwd):/sources infinitime-build
 ```
 
 4. Send to phone:
+* open Termux on phone, run command 
+```
+sshd
+```
+* then at laptop, run:
 
 ```
 scp -P 8022 build/output/pinetime-mcuboot-app-dfu-<version>.zip <phone_ip>:~
