@@ -110,6 +110,11 @@ void HeartRateTask::Work() {
   lastMeasurementTime = xTaskGetTickCount();
   valueCurrentlyShown = false;
 
+  // added by brent 2/14/26 for purposes of checking hrs freq //
+  TickType_t srWindowStart = xTaskGetTickCount();
+  uint32_t srCount = 0;
+  //////////////////////////////////////////////////////////////
+
   while (true) {
     TickType_t delay = CurrentTaskDelay();
     Messages msg;
@@ -167,6 +172,27 @@ void HeartRateTask::Work() {
 
     if (state == States::ForegroundMeasuring || state == States::BackgroundMeasuring) {
       HandleSensorData();
+
+      // added by brent 2/14/26 for purposes of getting hrs freq //
+      srCount++;
+
+      auto now = xTaskGetTickCount();
+      auto dtTicks = now - srWindowStart;
+
+      if (dtTicks >= pdMS_TO_TICKS(1000)) {
+        // Hz * 10 = count * tick_rate_hz * 10 / dtTicks
+        uint32_t hzX10_32 = (uint32_t) srCount * (uint32_t) configTICK_RATE_HZ * 10u / (uint32_t) dtTicks;
+        if (hzX10_32 > 65535u)
+          hzX10_32 = 65535u;
+        controller.SetSampleRateX10((uint16_t) hzX10_32);
+        srCount = 0;
+        srWindowStart = now;
+
+        // Logging option: temporary log (if you can see logs)
+        // NRF_LOG_INFO("HRS sample rate: " NRF_LOG_FLOAT_MARKER, NRF_LOG_FLOAT(sampleRateHz));
+      }
+      ///////////////////////////////////////////////////////////////
+
       count++;
     }
   }

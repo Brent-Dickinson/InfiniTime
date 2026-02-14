@@ -1,8 +1,12 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.154.2/containers/cpp
 {
+	"postStartCommand": "git submodule update --init --recursive",
 	"build": {
 		"dockerfile": "docker/Dockerfile"
+	},
+	"remoteEnv": {
+		"PATH": "/opt/gcc-arm-none-eabi-10.3-2021.10/bin:${containerEnv:PATH}"
 	},
 	"customizations": {
 		"vscode": {
