@@ -35,7 +35,7 @@ namespace Pinetime {
         lv_obj_t* label_status;
         lv_obj_t* btn_startStop;
         lv_obj_t* label_startStop;
-
+        lv_obj_t* label_test;
         lv_task_t* taskRefresh;
       };
     }
