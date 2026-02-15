@@ -26,12 +26,11 @@ The approach is:
 ```
 # if needed remove existing build directory:
 rm -rf build
-cmake -S . -B build -G "Unix Makefiles" \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_TOOLCHAIN_FILE=cmake-nRF5x/arm-gcc-toolchain.cmake \
-  -DARM_NONE_EABI_TOOLCHAIN_PATH=/opt/gcc-arm-none-eabi-10.3-2021.10 \
-  -DNRF5_SDK_PATH=/opt/nRF5_SDK_15.3.0_59ac345
-cmake --build build -j
+mkdir build
+cd build
+# for whatever reason, will probably need to add this to cmake:
+cmake .. \-DARM_NONE_EABI_TOOLCHAIN_PATH=/opt/gcc-arm-none-eabi-10.3-2021.10 \-DNRF5_SDK_PATH=/opt/nRF5_SDK_15.3.0_59ac345
+cmake --build .
 ```
 
 3. With no build errors, go to Linux terminal and run docker build:
@@ -41,11 +40,6 @@ sudo docker run --rm -v $(pwd):/sources infinitime-build
 ```
 
 4. Send to phone:
-* open Termux on phone, run command 
-```
-sshd
-```
-* then at laptop, run:
 
 ```
 scp -P 8022 build/output/pinetime-mcuboot-app-dfu-<version>.zip <phone_ip>:~

@@ -51,14 +51,8 @@ HeartRate::HeartRate(Controllers::HeartRateController& heartRateController, Syst
   label_status = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_set_style_local_text_color(label_status, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY);
   lv_label_set_text_static(label_status, ToString(Pinetime::Controllers::HeartRateController::States::NotEnoughData));
-  lv_obj_align(label_status, label_hr, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
 
-  // added by brent 2/14/26 for adding hrs to screen
-  label_sr = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(label_sr, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY);
-  lv_label_set_text_static(label_sr, "SR: --.- Hz");
-  lv_obj_align(label_sr, label_status, LV_ALIGN_OUT_BOTTOM_MID, 0, 8);
-  /////////////////////////////////////////////////
+  lv_obj_align(label_status, label_hr, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
 
   btn_startStop = lv_btn_create(lv_scr_act(), nullptr);
   btn_startStop->user_data = this;
@@ -99,17 +93,6 @@ void HeartRate::Refresh() {
 
   lv_label_set_text_static(label_status, ToString(state));
   lv_obj_align(label_status, label_hr, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-  lv_obj_align(label_sr, label_status, LV_ALIGN_OUT_BOTTOM_MID, 0, 8);
-
-  // added by brent 2/14/26 to get hrs data to UI //
-  static uint16_t lastHzX10 = 0xFFFF;
-  auto hzX10 = heartRateController.SampleRateX10();
-
-  if (hzX10 != lastHzX10) {
-    lastHzX10 = hzX10;
-    lv_label_set_text_fmt(label_sr, "SR: %u.%u Hz", hzX10 / 10, hzX10 % 10);
-  }
-  ///////////////////////////////////////////////////
 }
 
 void HeartRate::OnStartStopEvent(lv_event_t event) {

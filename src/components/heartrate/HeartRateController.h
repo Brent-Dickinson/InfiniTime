@@ -39,16 +39,6 @@ namespace Pinetime {
       States state = States::Stopped;
       uint8_t heartRate = 0;
       Pinetime::Controllers::HeartRateService* service = nullptr;
-    
-    // added by brent 2/14/26 for purposes of getting hrs to UI //
-    public:
-      void SetSampleRateX10(uint16_t hzX10);
-      uint16_t SampleRateX10() const;
-
-    private:
-      uint16_t sampleRateX10 {0};
-
-    ///////////////////////////////////////////////////////////////
     };
   }
 }

@@ -33,15 +33,3 @@ void HeartRateController::SetHeartRateTask(Pinetime::Applications::HeartRateTask
 void HeartRateController::SetService(Pinetime::Controllers::HeartRateService* service) {
   this->service = service;
 }
-
-// added by brent 2/14/26 for purposes of publishing hrs to UI //
-void HeartRateController::SetSampleRateX10(uint16_t hzX10) {
-  sampleRateX10 = hzX10;
-}
-
-uint16_t HeartRateController::SampleRateX10() const {
-  return sampleRateX10;
-}
-
-//////////////////////////////////////////////////////////////////
-
