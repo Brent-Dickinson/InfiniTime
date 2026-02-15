@@ -14,6 +14,10 @@ void HeartRateController::Update(HeartRateController::States newState, uint8_t h
   }
 }
 
+void HeartRateController::SetHandleSensorDataCount(uint16_t count) {
+  handleSensorDataCount = count;
+}
+
 void HeartRateController::Enable() {
   if (task != nullptr) {
     state = States::NotEnoughData;

@@ -168,6 +168,7 @@ void HeartRateTask::Work() {
     if (state == States::ForegroundMeasuring || state == States::BackgroundMeasuring) {
       HandleSensorData();
       count++;
+      controller.SetHandleSensorDataCount(count);
     }
   }
 }

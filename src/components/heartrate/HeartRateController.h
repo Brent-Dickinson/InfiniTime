@@ -32,12 +32,19 @@ namespace Pinetime {
         return heartRate;
       }
 
+      void SetHandleSensorDataCount(uint16_t count);
+
+      uint16_t HandleSensorDataCount() const {
+        return handleSensorDataCount;
+      }
+
       void SetService(Pinetime::Controllers::HeartRateService* service);
 
     private:
       Applications::HeartRateTask* task = nullptr;
       States state = States::Stopped;
       uint8_t heartRate = 0;
+      uint16_t handleSensorDataCount = 0;
       Pinetime::Controllers::HeartRateService* service = nullptr;
     };
   }
