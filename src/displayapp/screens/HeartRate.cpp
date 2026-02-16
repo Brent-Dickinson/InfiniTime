@@ -48,7 +48,7 @@ HeartRate::HeartRate(Controllers::HeartRateController& heartRateController, Syst
   lv_obj_set_style_local_text_font(label_test, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
   lv_obj_set_style_local_text_color(label_test, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::orange);
   lv_label_set_text_static(label_test, "2500");
-  lv_obj_align(label_test, nullptr, LV_ALIGN_OUT_BOTTOM_MID, -10, 10);
+  lv_obj_align(label_test, label_hr, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 10);
 
   label_bpm = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text_static(label_bpm, "Heart rate BPM");
@@ -58,7 +58,7 @@ HeartRate::HeartRate(Controllers::HeartRateController& heartRateController, Syst
   lv_obj_set_style_local_text_color(label_status, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY);
   lv_label_set_text_static(label_status, ToString(Pinetime::Controllers::HeartRateController::States::NotEnoughData));
 
-  lv_obj_align(label_status, label_hr, LV_ALIGN_OUT_BOTTOM_MID, 10, 10);
+  lv_obj_align(label_status, label_hr, LV_ALIGN_OUT_BOTTOM_RIGHT, 0, 10);
 
   btn_startStop = lv_btn_create(lv_scr_act(), nullptr);
   btn_startStop->user_data = this;
