@@ -101,7 +101,7 @@ void HeartRate::Refresh() {
   lv_obj_align(label_status, label_hr, LV_ALIGN_OUT_BOTTOM_MID, 10, 10);
   if (label_test != nullptr) {
     testCount++;
-    lv_label_set_text_fmt(label_test, "%u", testCount);
+    lv_label_set_text_fmt(label_test, "%u", heartRateController.HandleSensorDataCount());
   }
 }
 
