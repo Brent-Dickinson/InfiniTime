@@ -1,6 +1,7 @@
 #include "displayapp/DisplayApp.h"
 #include <libraries/log/nrf_log.h>
 #include "displayapp/screens/HeartRate.h"
+#include "displayapp/screens/HeartRateVariability.h"
 #include "displayapp/screens/Motion.h"
 #include "displayapp/screens/Timer.h"
 #include "displayapp/screens/Alarm.h"
@@ -650,6 +651,12 @@ void DisplayApp::LoadScreen(Apps app, DisplayApp::FullRefreshDirections directio
       break;
     case Apps::FlashLight:
       currentScreen = std::make_unique<Screens::FlashLight>(*systemTask, brightnessController);
+      break;
+    case Apps::HeartRate:
+      currentScreen = std::make_unique<Screens::HeartRate>(controllers.heartRateController, *systemTask);
+      break;
+    case Apps::HeartRateVariability:
+      currentScreen = std::make_unique<Screens::HeartRateVariability>(controllers.heartRateController, *systemTask);
       break;
     default: {
       const auto* d = std::ranges::find_if(userApps, [app](const AppDescription& appDescription) {
