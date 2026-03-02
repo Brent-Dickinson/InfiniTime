@@ -34,8 +34,8 @@ HeartRateVariability::HeartRateVariability(HeartRateController& heartRateControl
   bool isHrRunning = previousState != HeartRateController::States::Stopped;
 
   labelTitle = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_font(labelTitle, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
-  lv_label_set_text_static(labelTitle, "Heart Rate\nVariability");
+  lv_obj_set_style_local_text_font(labelTitle, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
+  lv_label_set_text_static(labelTitle, "Heart Rate Variability");
   lv_obj_align(labelTitle, nullptr, LV_ALIGN_IN_TOP_MID, 0, 10);
 
   labelHr = lv_label_create(lv_scr_act(), nullptr);
@@ -49,18 +49,18 @@ HeartRateVariability::HeartRateVariability(HeartRateController& heartRateControl
   lv_obj_align(labelStatus, labelHr, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
 
   labelRmssd = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_font(labelRmssd, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
-  lv_label_set_text_static(labelRmssd, "RMSSD\n-- ms");
-  lv_obj_align(labelRmssd, nullptr, LV_ALIGN_IN_LEFT_MID, 0, -10);
+  lv_obj_set_style_local_text_font(labelRmssd, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
+  lv_label_set_text_static(labelRmssd, "RMSSD  -- ms");
+  lv_obj_align(labelRmssd, nullptr, LV_ALIGN_IN_LEFT_MID, 5, 10);
 
   labelSdnn = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_font(labelSdnn, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
-  lv_label_set_text_static(labelSdnn, "SDNN\n-- ms");
+  lv_obj_set_style_local_text_font(labelSdnn, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
+  lv_label_set_text_static(labelSdnn, "SDNN   -- ms");
   lv_obj_align(labelSdnn, labelRmssd, LV_ALIGN_OUT_BOTTOM_LEFT, 0, kLineSpacing);
 
   labelPnn50 = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_font(labelPnn50, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
-  lv_label_set_text_static(labelPnn50, "pNN50\n-- %");
+  lv_obj_set_style_local_text_font(labelPnn50, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
+  lv_label_set_text_static(labelPnn50, "pNN50  -- %");
   lv_obj_align(labelPnn50, labelSdnn, LV_ALIGN_OUT_BOTTOM_LEFT, 0, kLineSpacing);
 
   labelSamples = lv_label_create(lv_scr_act(), nullptr);
@@ -223,13 +223,13 @@ void HeartRateVariability::RecomputeMetrics() {
 
 void HeartRateVariability::UpdateMetricLabels() {
   if (metrics.samples < 2) {
-    lv_label_set_text_static(labelRmssd, "RMSSD\n-- ms");
-    lv_label_set_text_static(labelSdnn, "SDNN\n-- ms");
-    lv_label_set_text_static(labelPnn50, "pNN50\n-- %");
+    lv_label_set_text_static(labelRmssd, "RMSSD  -- ms");
+    lv_label_set_text_static(labelSdnn, "SDNN   -- ms");
+    lv_label_set_text_static(labelPnn50, "pNN50  -- %");
   } else {
-    lv_label_set_text_fmt(labelRmssd, "RMSSD\n%3.0f ms", metrics.rmssd);
-    lv_label_set_text_fmt(labelSdnn, "SDNN\n%3.0f ms", metrics.sdnn);
-    lv_label_set_text_fmt(labelPnn50, "pNN50\n%2.0f %%", metrics.pnn50);
+    lv_label_set_text_fmt(labelRmssd, "RMSSD %d ms", static_cast<int>(metrics.rmssd));
+    lv_label_set_text_fmt(labelSdnn, "SDNN  %d ms", static_cast<int>(metrics.sdnn));
+    lv_label_set_text_fmt(labelPnn50, "pNN50 %d %%", static_cast<int>(metrics.pnn50));
   }
 
   lv_label_set_text_fmt(labelSamples, "Beats: %u/%u", static_cast<unsigned>(metrics.samples), static_cast<unsigned>(maxSamples));
