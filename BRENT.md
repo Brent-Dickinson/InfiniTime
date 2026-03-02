@@ -1,88 +1,145 @@
-# PineTime/InfiniTime tweaking
+# PineTime / InfiniTime Custom Firmware Workflow
 
-* Laptop: Ubuntu 22.04 with VS Code
-* Phone: Samsung S22 with Termux
-* InfiniTime firmware
-* Docker-based build
-* BLE DFU via phone
+## Hardware / Machines
 
----
-
-The approach is:
-
-* Edit personal fork of InfiniTime with VS code, run test build in dev container.
-* Use **Docker** to encapsulate the ARM toolchain and NRF5 SDK exactly as InfiniTime expects.
-* Build firmware locally into **DFU ZIP artifacts** suitable for MCUBoot.
-* Transfer the DFU ZIP to an Android phone.
-* Flash the firmware to PineTime **over BLE** using **Gadgetbridge** (via F-Droid).
+- **Windows laptop** – editing only (VS Code)
+- **Lenovo Ubuntu 22.04** – canonical build machine (Docker)
+- **Samsung S22 (Termux + Gadgetbridge)** – DFU flashing over BLE
 
 ---
 
-## Normal workflow
+# Core Principle
 
-1. When editing code in VS Code, make sure to open in dev container
-2. After saving changes to code, run a test build in VS Code (takes a very long time):
+Edit anywhere.  
+Build only on the Lenovo.  
+Always build inside Docker.  
+Never run host `cmake` on the Lenovo.
 
+---
+
+# Normal Workflow
+
+## 1. Edit Code
+
+- Edit in VS Code (Windows or Lenovo).
+- Commit and push to your fork.
+
+---
+
+## 2. Build on Lenovo (Docker Only)
+
+SSH into Lenovo:
+
+```bash
+cd ~/InfiniTime
+git pull
 ```
-# if needed remove existing build directory:
+
+If you previously ran host CMake, clean it once:
+
+```bash
 rm -rf build
-mkdir build
-cd build
-# for whatever reason, will probably need to add this to cmake:
-cmake .. \-DARM_NONE_EABI_TOOLCHAIN_PATH=/opt/gcc-arm-none-eabi-10.3-2021.10 \-DNRF5_SDK_PATH=/opt/nRF5_SDK_15.3.0_59ac345
-cmake --build .
 ```
-# this is the last approach that worked (20260301):
-```
-rm -rf build
+
+### Build (canonical command)
+
+```bash
+docker build -t infinitime-builder -f docker/Dockerfile docker
+
 docker run --rm -it \
   -v "$PWD":/sources \
   infinitime-builder \
   /sources/docker/build.sh
 ```
 
-3. With no build errors, go to Linux terminal and run docker build:
+Output will appear in:
 
-```
-sudo docker run --rm -v $(pwd):/sources infinitime-build
+```bash
+build/output/
 ```
 
-4. Send to phone:
+You should see:
 
+```bash
+pinetime-mcuboot-app-dfu-<version>.zip
 ```
+
+---
+
+## 3. Send Firmware to Phone
+
+Find phone IP (Tailscale or local network).
+
+```bash
 scp -P 8022 build/output/pinetime-mcuboot-app-dfu-<version>.zip <phone_ip>:~
 ```
 
-# Setup - only done once
+---
 
-## Clone InfiniTime
+## 4. Flash via Gadgetbridge
 
-```
-git clone https://github.com/InfiniTimeOrg/InfiniTime.git
-# go to github, create fork, verify in my github. 
-# remove infitime repo, clone my fork from my github.
-# may need to update submodules.
-git submodule status
+On phone:
+
+- Open Gadgetbridge
+- Connect PineTime
+- Install firmware
+- Select the DFU ZIP
+
+---
+
+# Setup (One Time Only)
+
+## Clone Your Fork
+
+```bash
+git clone <your fork URL>
+cd InfiniTime
 git submodule update --init --recursive
 ```
 
 ---
 
-## Install Docker
+## Install Docker (Lenovo)
 
 ```bash
 sudo apt update
 sudo apt install docker.io
+sudo usermod -aG docker $USER
 ```
 
----
-
-## Install Gadgetbridge
-
-On the phone:
-
-1. Install **F-Droid** from [https://f-droid.org](https://f-droid.org)
-2. Install **Gadgetbridge** from F-Droid
-3. Grant Bluetooth / Nearby Devices permissions
+Log out and back in after adding yourself to the docker group.
 
 ---
+
+## Install Gadgetbridge (Phone)
+
+1. Install F-Droid
+2. Install Gadgetbridge
+3. Grant Bluetooth permissions
+
+---
+
+# Important Notes
+
+### Do NOT:
+
+- Run host `cmake` on Lenovo.
+- Mix host builds and Docker builds in the same `build/` directory.
+- Install the NRF5 SDK manually on the host unless intentionally doing host-native builds.
+
+### If CMake complains about path mismatch:
+
+```bash
+rm -rf build
+```
+
+Then rebuild via Docker.
+
+---
+
+# Mental Model
+
+Lenovo = build server  
+Docker = toolchain + SDK  
+Windows = editor only  
+Phone = DFU target
