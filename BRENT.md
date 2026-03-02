@@ -32,6 +32,14 @@ cd build
 cmake .. \-DARM_NONE_EABI_TOOLCHAIN_PATH=/opt/gcc-arm-none-eabi-10.3-2021.10 \-DNRF5_SDK_PATH=/opt/nRF5_SDK_15.3.0_59ac345
 cmake --build .
 ```
+# this is the last approach that worked (20260301):
+```
+rm -rf build
+docker run --rm -it \
+  -v "$PWD":/sources \
+  infinitime-builder \
+  /sources/docker/build.sh
+```
 
 3. With no build errors, go to Linux terminal and run docker build:
 

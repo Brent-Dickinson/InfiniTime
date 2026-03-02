@@ -3,6 +3,11 @@
 #include <algorithm>
 #include "displayapp/InfiniTimeTheme.h"
 
+extern lv_font_t jetbrains_mono_42;
+extern lv_font_t jetbrains_mono_bold_20;
+extern lv_font_t jetbrains_mono_76;
+extern lv_font_t jetbrains_mono_extrabold_compressed;
+
 using namespace Pinetime::Applications::Screens;
 using namespace Pinetime::Controllers;
 
@@ -29,7 +34,7 @@ HeartRateVariability::HeartRateVariability(HeartRateController& heartRateControl
   bool isHrRunning = previousState != HeartRateController::States::Stopped;
 
   labelTitle = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_font(labelTitle, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_28);
+  lv_obj_set_style_local_text_font(labelTitle, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
   lv_label_set_text_static(labelTitle, "Heart Rate\nVariability");
   lv_obj_align(labelTitle, nullptr, LV_ALIGN_IN_TOP_MID, 0, 10);
 
@@ -44,27 +49,27 @@ HeartRateVariability::HeartRateVariability(HeartRateController& heartRateControl
   lv_obj_align(labelStatus, labelHr, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
 
   labelRmssd = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_font(labelRmssd, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_28);
+  lv_obj_set_style_local_text_font(labelRmssd, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
   lv_label_set_text_static(labelRmssd, "RMSSD\n-- ms");
   lv_obj_align(labelRmssd, nullptr, LV_ALIGN_IN_LEFT_MID, 0, -10);
 
   labelSdnn = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_font(labelSdnn, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_28);
+  lv_obj_set_style_local_text_font(labelSdnn, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
   lv_label_set_text_static(labelSdnn, "SDNN\n-- ms");
   lv_obj_align(labelSdnn, labelRmssd, LV_ALIGN_OUT_BOTTOM_LEFT, 0, kLineSpacing);
 
   labelPnn50 = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_font(labelPnn50, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_28);
+  lv_obj_set_style_local_text_font(labelPnn50, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
   lv_label_set_text_static(labelPnn50, "pNN50\n-- %");
   lv_obj_align(labelPnn50, labelSdnn, LV_ALIGN_OUT_BOTTOM_LEFT, 0, kLineSpacing);
 
   labelSamples = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_font(labelSamples, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_20);
+  lv_obj_set_style_local_text_font(labelSamples, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
   lv_label_set_text_static(labelSamples, "Beats: 0/64");
   lv_obj_align(labelSamples, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, -55);
 
   labelHint = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_font(labelHint, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_16);
+  lv_obj_set_style_local_text_font(labelHint, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
   lv_obj_set_style_local_text_color(labelHint, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
   lv_label_set_text_static(labelHint, "Need ~20 beats for stable HRV");
   lv_obj_align(labelHint, labelSamples, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 4);
